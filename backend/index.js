@@ -3,6 +3,7 @@ const app = express()
 require('dotenv').config()
 
 const User = require('./models/user')
+const Property = require('./models/property')
 
 const cors = require('cors')
 
@@ -27,6 +28,13 @@ app.get('/api/users', (request, response) => {
         response.json(users)
     })
 })
+
+app.get('/api/properties', (request, response) => {
+    Property.find({}).then(property => {
+        response.json(property)
+    })
+})
+
 
 app.get('/api/users/:id', (request, response) => {
     User.findById(request.params.id).then(user => {
@@ -53,6 +61,23 @@ app.post('/api/users', (request, response) => {
 
     user.save().then(savedUser => {
         response.json(savedUser)
+    })
+}) 
+
+app.post('/api/properties', (request, response) => {
+    const body = request.body
+
+    if (body.name === undefined) {
+        return response.status(400).json({error: 'content missing'})
+    }
+
+    const property = new Property({
+        name: body.name,
+        adress: body.adress
+    })
+
+    property.save().then(savedProperty => {
+        response.json(savedProperty)
     })
 }) 
 

@@ -1,14 +1,31 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import userServices from '../services/user.js'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+
+
+const App = () => {
+  const [users, setUsers] = useState([])
+
+
+
+  useEffect(() => {
+    console.log('effect')
+    userServices
+      .getAll()
+      .then(response => {
+        setUsers(response.data)
+      })
+  }, [])
+
 
   return (
     <>
       <p>hello there!</p>
+      <button onClick={() => console.log('CLICK!')} >Sign in</button>
+      {users.map(user => <p>{user.name}</p>)}
     </>
   )
 }
