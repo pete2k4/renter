@@ -7,11 +7,11 @@ const userSchema = new mongoose.Schema({
 }, {collection : "users"})
 
 userSchema.pre('save', async function (next) {
-    if (!this.isModified('password')) return next(); // Only hash if password is new or modified
+    if (!this.isModified('password')) return next(); 
     try {
   
-      const salt = await bcrypt.genSalt(10); // Generate salt
-      this.password = await bcrypt.hash(this.password, salt); // Hash the password with salt
+      const salt = await bcrypt.genSalt(10); 
+      this.password = await bcrypt.hash(this.password, salt); 
       next();
   
     } catch (error) {

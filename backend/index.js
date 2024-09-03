@@ -4,19 +4,21 @@ require('dotenv').config()
 const connectDB = require('./config/db')
 const User = require('./models/user')
 const Property = require('./models/property')
-
 const cors = require('cors')
-
+const authRoutes = require('./routes/auth')
 app.use(cors(), express.static('dist'))
+
 const requestLogger = (request, response, next) => {
     console.log('Method:', request.method)
     console.log('Path:  ', request.path)
     console.log('Body:  ', request.body)
     console.log('---')
     next()
-  }
+}
+
 app.use(express.json())
 app.use(requestLogger)
+app.use('/auth', authRoutes)
 connectDB()
 
 app.get('/', (request, response) => {
