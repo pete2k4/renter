@@ -1,19 +1,4 @@
 const mongoose = require('mongoose')
-mongoose.set('strictQuery',false)
-
-require('dotenv').config()
-
-const url = process.env.MONGODB_URI
-
-console.log('connectig properties to ', url)
-
-mongoose.connect(url)
-    .then(result => {
-        console.log('connected to MongoDB')
-    })
-    .catch(error => {
-        console.log('error connecting to MongoDB: ', error.message)
-    })
 
 const propertySchema = new mongoose.Schema({
   name: String,

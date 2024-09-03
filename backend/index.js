@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 require('dotenv').config()
-
+const connectDB = require('./config/db')
 const User = require('./models/user')
 const Property = require('./models/property')
 
@@ -17,7 +17,7 @@ const requestLogger = (request, response, next) => {
   }
 app.use(express.json())
 app.use(requestLogger)
-
+connectDB()
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
@@ -56,7 +56,7 @@ app.post('/api/users', (request, response) => {
 
     const user = new User({
         name: body.name,
-        phoneNumber: body.phoneNumber
+        password: body.password
     })
 
     user.save().then(savedUser => {

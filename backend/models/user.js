@@ -1,24 +1,23 @@
 const mongoose = require('mongoose')
-mongoose.set('strictQuery',false)
-
-require('dotenv').config()
-
-const url = process.env.MONGODB_URI
-
-console.log('connectig users to ', url)
-
-mongoose.connect(url)
-    .then(result => {
-        console.log('connected to MongoDB')
-    })
-    .catch(error => {
-        console.log('error connecting to MongoDB: ', error.message)
-    })
+const bcrypt = require('bcryptjs')
 
 const userSchema = new mongoose.Schema({
   name: String,
-  phoneNumber: String,
+  password: String,
 }, {collection : "users"})
+
+userSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) return next(); // Only hash if password is new or modified
+    try {
+  
+      const salt = await bcrypt.genSalt(10); // Generate salt
+      this.password = await bcrypt.hash(this.password, salt); // Hash the password with salt
+      next();
+  
+    } catch (error) {
+      next(error);
+    }
+  });
 
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {

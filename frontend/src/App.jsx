@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import userServices from '../services/user.js'
 import './App.css'
 
@@ -8,8 +7,6 @@ import './App.css'
 
 const App = () => {
   const [users, setUsers] = useState([])
-
-
 
   useEffect(() => {
     console.log('effect')
